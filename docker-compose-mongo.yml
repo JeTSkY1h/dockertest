@@ -1,0 +1,46 @@
+version: "3"
+
+services:
+
+  mongo1: 
+    image: mongo
+    restart: unless-stopped
+    container_name: mongo1
+    volumes:
+    - ./scripts:/scripts
+    - ./key:/key
+    ports: 
+    - "27017:27017"
+    expose: 
+    - "27017"
+    entrypoint: [ "/usr/bin/mongod", "--replSet", "rsmongo", "--bind_ip_all", "--keyFile", "/key/mongoRs.key", "--auth"]
+
+  mongo2: 
+    image: mongo
+    depends_on: 
+    - mongo1
+    restart: unless-stopped
+    container_name: mongo2
+    volumes: 
+    - ./key:/key
+    ports: 
+    - "27022:27017"
+    expose: 
+    - "27017"
+    entrypoint: [ "/usr/bin/mongod", "--replSet", "rsmongo", "--bind_ip_all", "--keyFile", "/key/mongoRs.key"]
+
+  mongo3: 
+    image: mongo
+    depends_on: 
+    - mongo1
+    restart: unless-stopped
+    container_name: mongo3
+    volumes: 
+    - ./key:/key
+    ports: 
+    - "27023:27017"
+    expose: 
+    - "27017"
+    entrypoint: [ "/usr/bin/mongod", "--replSet", "rsmongo", "--bind_ip_all", "--keyFile", "/key/mongoRs.key"]
+
+  

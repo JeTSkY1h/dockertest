@@ -34,8 +34,8 @@ when our nodes are up and running, we need to restart our existing mongoDb conta
 finally we need to initiate the replicaSet by logging in the primary node and running  `rs.initiate(configObject)`  in my case the configObject should look like this:
 
 
-```json
-{_id:"rsmongo",version:1,
+```js
+{_id:rsmongo,version:1,
     members:[
         {_id:0, host: "runtime-application-mongodb-1:27017"},
         {_id:0,host: "dockertest-mongoNode1-1:27017"},
